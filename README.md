@@ -3,9 +3,9 @@
 ## Build setup
 
 ```
-## install dependencies
+# install dependencies
 npm install
 
-## start app at localhost:8080
+# start app at localhost:8080
 npm run dev
 ```
