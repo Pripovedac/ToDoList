@@ -1,12 +1,12 @@
 <template>
     <div id="app">
         <img src="./assets/logo.png"> <br/>
-        <List :newItem="newItem" :filterValue="filter"/>
+        <List :itemList="newList" :filterValue="filter" @stateChanged="modifyList($event)"/>
         <br/>
         <NewEntry @newTask="addTask($event)"/>
         <Filters @filterUsers="filterUsers($event)"/>
         <br/>
-        <footer> &copy Storyteller</footer>
+        <footer> &copy; Storyteller</footer>
     </div>
 </template>
 
@@ -28,16 +28,45 @@
             return {
                 newItem: "",
                 filter: "all",
+                mainItemList: [],
+                displayList: []
             }
         },
         methods: {
             addTask(newTask) {
-                this.newItem = newTask
+                let newItem = {task: newTask, checked: false}
+                this.mainItemList.push(newItem)
             },
             filterUsers(radioFilter) {
                 this.filter = radioFilter
+                if (radioFilter == 'all') {
+                    this.displayList = [...this.mainItemList]
+                }
+                else {
+                   this.displayList = this.mainItemList.filter(item => item.checked == radioFilter)
+               }
+            },
+            modifyList() {
+                this.mainItemList = [...this.mainItemList]
+                // Stupid way to make newList calculate its value.
             }
+
         },
+        computed: {
+            newList: function () {
+                // Computed props change everytime some of its dependencies changes
+                // in this case mainItemList.
+                // It's just like any other function, except it's more optimal, because
+                // it won't calucalte the result over and over again if parameters
+                // are not changed.
+                if (this.filter == 'all') {
+                    return [...this.mainItemList]
+                }
+                else {
+                    return this.mainItemList.filter(item => item.checked == this.filter)
+                }
+            }
+        }
     }
 </script>
 

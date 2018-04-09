@@ -17,6 +17,7 @@
             changeState(event) {
                 // I know I'm not using event in this method.
                 this.$emit("stateChanged", this.task)
+                console.log('ListItem: ', this.task)
             }
         }
     }
