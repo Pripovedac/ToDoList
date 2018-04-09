@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <img src="./assets/logo.png"> <br/>
-        <List :itemList="newList" :filterValue="filter" @stateChanged="modifyList($event)"/>
+        <List :itemList="newList" :filterValue="filter" @stateChanged="modifyOneElem($event)"/>
         <br/>
         <NewEntry @newTask="addTask($event)"/>
         <Filters @filterUsers="filterUsers($event)"/>
@@ -43,12 +43,16 @@
                     this.displayList = [...this.mainItemList]
                 }
                 else {
-                   this.displayList = this.mainItemList.filter(item => item.checked == radioFilter)
-               }
+                    this.displayList = this.mainItemList.filter(item => item.checked == radioFilter)
+                }
             },
-            modifyList() {
-                this.mainItemList = [...this.mainItemList]
-                // Stupid way to make newList calculate its value.
+            modifyOneElem(stateSwapper) {
+                let modifiedElement = this.mainItemList.find(item => item.task == stateSwapper)
+                let modifiedIndex = this.mainItemList.indexOf(modifiedElement)
+                let alteredListOne = this.mainItemList.splice(0, modifiedIndex)
+                alteredListOne.push({task: modifiedElement.task, checked: !modifiedElement.checked})
+                let alteredListTwo = this.mainItemList.splice(modifiedIndex)
+                this.mainItemList = alteredListOne.concat(alteredListTwo)
             }
 
         },

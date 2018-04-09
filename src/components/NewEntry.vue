@@ -19,7 +19,6 @@
                 // string.trim() removes all whitespaces from
                 // both sides of string.
                 if (this.task.trim().length) {
-                   /// console.log('NewEntry:', this.task)
                     this.$emit("newTask", this.task)
                     this.$refs.inputField.focus()
                     this.task = ""
